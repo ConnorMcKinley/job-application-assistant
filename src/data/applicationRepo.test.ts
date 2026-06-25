@@ -40,10 +40,11 @@ describe("applicationRepo", () => {
   it("updates an application and re-stamps updatedAt", async () => {
     const id = await createApplication(sample);
     const before = await getApplication(id);
-    await new Promise((r) => setTimeout(r, 2));
+    await new Promise((r) => setTimeout(r, 10));
     await updateApplication(id, { status: "interview" });
     const after = await getApplication(id);
     expect(after!.status).toBe("interview");
+    expect(after!.updatedAt >= before!.updatedAt).toBe(true);
     expect(after!.updatedAt).not.toBe(before!.updatedAt);
   });
 

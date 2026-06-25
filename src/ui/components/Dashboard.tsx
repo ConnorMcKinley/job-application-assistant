@@ -10,7 +10,7 @@ import {
   type NewApplication,
 } from "../../data/applicationRepo";
 import { getSettings, markSetupComplete } from "../../data/settingsRepo";
-import { getProfile, saveProfile } from "../../data/profileRepo";
+import { saveProfile } from "../../data/profileRepo";
 import type { Application, Profile } from "../../models/types";
 
 type View = "loading" | "wizard" | "list";

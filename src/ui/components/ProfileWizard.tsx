@@ -45,7 +45,8 @@ export function ProfileWizard({ initial, onComplete }: Props) {
             School
             <input
               value={profile.education[0]?.school ?? ""}
-              onChange={(e) =>
+              onChange={(e) => {
+                // NOTE: rebuilds entry[0] from scratch — when adding more fields to this step, preserve them here or data will be lost.
                 setProfile({
                   ...profile,
                   education: [{
@@ -53,7 +54,7 @@ export function ProfileWizard({ initial, onComplete }: Props) {
                     field: "", startDate: "", endDate: "", gpa: "",
                   }],
                 })
-              }
+              }}
             />
           </label>
         </div>
@@ -65,7 +66,8 @@ export function ProfileWizard({ initial, onComplete }: Props) {
             Most recent title
             <input
               value={profile.experience[0]?.title ?? ""}
-              onChange={(e) =>
+              onChange={(e) => {
+                // NOTE: rebuilds entry[0] from scratch — when adding more fields to this step, preserve them here or data will be lost.
                 setProfile({
                   ...profile,
                   experience: [{
@@ -73,7 +75,7 @@ export function ProfileWizard({ initial, onComplete }: Props) {
                     startDate: "", endDate: "", description: "",
                   }],
                 })
-              }
+              }}
             />
           </label>
         </div>
