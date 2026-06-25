@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { createLLMClient } from "./factory";
 import { ApiKeyLLMClient } from "./apiKeyClient";
+import { OAuthLLMClient } from "./oauthClient";
 import { defaultSettings } from "../models/types";
 
 describe("createLLMClient", () => {
@@ -9,9 +10,8 @@ describe("createLLMClient", () => {
     expect(client).toBeInstanceOf(ApiKeyLLMClient);
   });
 
-  it("throws for the oauth backend in Slice 1", () => {
-    expect(() => createLLMClient({ ...defaultSettings(), llmBackend: "oauth" })).toThrow(
-      /OAuth backend not implemented/,
-    );
+  it("returns an OAuthLLMClient for the oauth backend", () => {
+    const client = createLLMClient({ ...defaultSettings(), llmBackend: "oauth", oauthAccessToken: "sk-ant-oat01-x" });
+    expect(client).toBeInstanceOf(OAuthLLMClient);
   });
 });
