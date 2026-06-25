@@ -14,3 +14,8 @@ export async function markSetupComplete(): Promise<void> {
   const current = await getSettings();
   await saveSettings({ ...current, setupComplete: true });
 }
+
+export function isLlmConfigured(settings: Settings): boolean {
+  if (settings.llmBackend === "apiKey") return settings.apiKey !== "";
+  return settings.oauthAccessToken !== "";
+}

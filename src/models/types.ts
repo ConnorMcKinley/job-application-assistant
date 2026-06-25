@@ -98,6 +98,9 @@ export interface Settings {
   id: 1;
   llmBackend: "apiKey" | "oauth";
   apiKey: string;
+  oauthAccessToken: string;
+  oauthRefreshToken: string;
+  oauthExpiresAt: number; // epoch ms; 0 when unset
   setupComplete: boolean;
 }
 
@@ -115,7 +118,15 @@ export function emptyProfile(): Profile {
 }
 
 export function defaultSettings(): Settings {
-  return { id: 1, llmBackend: "apiKey", apiKey: "", setupComplete: false };
+  return {
+    id: 1,
+    llmBackend: "apiKey",
+    apiKey: "",
+    oauthAccessToken: "",
+    oauthRefreshToken: "",
+    oauthExpiresAt: 0,
+    setupComplete: false,
+  };
 }
 
 export interface AtsPattern {
