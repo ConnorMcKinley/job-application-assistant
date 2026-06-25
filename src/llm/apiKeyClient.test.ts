@@ -29,4 +29,20 @@ describe("ApiKeyLLMClient", () => {
     const client = new ApiKeyLLMClient("sk-bad", mockFetch as unknown as typeof fetch);
     await expect(client.complete([{ role: "user", content: "hi" }])).rejects.toThrow(/401/);
   });
+
+  it("attaches images as blocks on the last user message", async () => {
+    const mockFetch = vi.fn(async () =>
+      new Response(JSON.stringify({ content: [{ type: "text", text: "ok" }] }), { status: 200 }),
+    );
+    const client = new ApiKeyLLMClient("sk-test", mockFetch as unknown as typeof fetch);
+    await client.complete([{ role: "user", content: "look" }], { images: ["BASE64DATA"] });
+    const body = JSON.parse((mockFetch.mock.calls[0]![1] as RequestInit).body as string);
+    const last = body.messages[body.messages.length - 1];
+    expect(Array.isArray(last.content)).toBe(true);
+    expect(last.content[0]).toEqual({ type: "text", text: "look" });
+    expect(last.content[1]).toEqual({
+      type: "image",
+      source: { type: "base64", media_type: "image/png", data: "BASE64DATA" },
+    });
+  });
 });

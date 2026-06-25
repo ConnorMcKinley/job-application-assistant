@@ -6,6 +6,7 @@ export interface LLMMessage {
 export interface LLMCompleteOptions {
   system?: string;
   maxTokens?: number;
+  images?: string[];
 }
 
 export interface LLMClient {
