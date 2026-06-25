@@ -28,7 +28,7 @@ export function parseCallbackCode(pasted: string): { code: string; state: string
   const trimmed = pasted.trim();
   const hash = trimmed.indexOf("#");
   if (hash === -1) return { code: trimmed, state: "" };
-  return { code: trimmed.slice(0, hash), state: trimmed.slice(hash + 1) };
+  return { code: trimmed.slice(0, hash).trim(), state: trimmed.slice(hash + 1).trim() };
 }
 
 function toTokens(data: TokenResponse): OAuthTokens {

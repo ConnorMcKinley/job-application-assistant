@@ -23,6 +23,9 @@ describe("parseCallbackCode", () => {
   it("handles a bare code", () => {
     expect(parseCallbackCode("abc")).toEqual({ code: "abc", state: "" });
   });
+  it("trims whitespace around an inner #", () => {
+    expect(parseCallbackCode("code # state")).toEqual({ code: "code", state: "state" });
+  });
 });
 
 describe("exchangeCode", () => {
@@ -61,5 +64,11 @@ describe("refreshTokens", () => {
     const body = JSON.parse((mockFetch.mock.calls[0]![1] as RequestInit).body as string);
     expect(body.grant_type).toBe("refresh_token");
     expect(body.refresh_token).toBe("R1");
+  });
+
+  it("throws on a non-OK response", async () => {
+    const mockFetch = vi.fn(async () => new Response("bad", { status: 400 }));
+    await expect(refreshTokens({ refreshToken: "R", fetchFn: mockFetch as unknown as typeof fetch }))
+      .rejects.toThrow(/OAuth token refresh failed: 400/);
   });
 });
