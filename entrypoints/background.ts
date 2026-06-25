@@ -7,7 +7,7 @@ import { captureApplication } from "../src/autofill/capture";
 import type { ContentRequest, ContentResponse } from "../src/autofill/contentHandler";
 import type { PanelToSW, SWToPanel } from "../src/autofill/sidepanelMessages";
 import type { FieldDescriptor, FieldKind } from "../src/autofill/types";
-import { getSettings } from "../src/data/settingsRepo";
+import { getSettings, saveSettings } from "../src/data/settingsRepo";
 import { getProfile } from "../src/data/profileRepo";
 import { createApplication, listApplications } from "../src/data/applicationRepo";
 import { createLLMClient } from "../src/llm/factory";
@@ -89,7 +89,14 @@ export default defineBackground(() => {
 
   async function runPlanner(fields: FieldDescriptor[]): Promise<void> {
     const [settings, profile] = await Promise.all([getSettings(), getProfile()]);
-    const client = createLLMClient(settings);
+    const client = createLLMClient(settings, (t) => {
+      void saveSettings({
+        ...settings,
+        oauthAccessToken: t.accessToken,
+        oauthRefreshToken: t.refreshToken,
+        oauthExpiresAt: t.expiresAt,
+      });
+    });
     const projection = buildProfileProjection(profile);
     const qna = profile.qnaBank;
     try {

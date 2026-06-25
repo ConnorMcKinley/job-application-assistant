@@ -3,7 +3,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Dashboard } from "./Dashboard";
 import { db } from "../../data/db";
-import { markSetupComplete } from "../../data/settingsRepo";
+import { markSetupComplete, saveSettings } from "../../data/settingsRepo";
+import { defaultSettings } from "../../models/types";
 
 describe("Dashboard", () => {
   beforeEach(async () => {
@@ -30,5 +31,19 @@ describe("Dashboard", () => {
     await userEvent.type(screen.getByLabelText(/position/i), "SWE");
     await userEvent.click(screen.getByRole("button", { name: /save/i }));
     await waitFor(() => expect(screen.getByText("Acme")).toBeInTheDocument());
+  });
+
+  it("shows the auth-gate banner until an LLM is configured", async () => {
+    await markSetupComplete();
+    render(<Dashboard />);
+    expect(await screen.findByText(/connect an llm to enable auto-fill/i)).toBeInTheDocument();
+  });
+
+  it("opens Settings from the header", async () => {
+    await markSetupComplete();
+    await saveSettings({ ...defaultSettings(), apiKey: "sk-x", setupComplete: true });
+    render(<Dashboard />);
+    await userEvent.click(await screen.findByRole("button", { name: /settings/i }));
+    expect(await screen.findByRole("heading", { name: /^settings$/i })).toBeInTheDocument();
   });
 });

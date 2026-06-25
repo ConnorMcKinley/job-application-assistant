@@ -5,6 +5,7 @@ export default defineConfig({
   manifest: {
     name: "Job Application Assistant",
     permissions: ["storage", "sidePanel", "activeTab", "scripting", "tabs"],
+    host_permissions: ["https://console.anthropic.com/*", "https://api.anthropic.com/*"],
     action: {},
     side_panel: { default_path: "sidepanel.html" },
   },
