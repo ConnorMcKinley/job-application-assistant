@@ -55,7 +55,7 @@ export function SettingsContainer({ onClose }: { onClose: () => void }) {
   async function submitCode(rawPasted: string) {
     const saved = pkce.current;
     const { code, state } = parseCallbackCode(rawPasted);
-    if (!saved || (state !== "" && state !== saved.state)) {
+    if (!saved || state === "" || state !== saved.state) {
       setStatus("error");
       setStatusMessage("State mismatch — please Connect again.");
       return;
