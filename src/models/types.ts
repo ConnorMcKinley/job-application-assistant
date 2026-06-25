@@ -117,3 +117,8 @@ export function emptyProfile(): Profile {
 export function defaultSettings(): Settings {
   return { id: 1, llmBackend: "apiKey", apiKey: "", setupComplete: false };
 }
+
+export interface AtsPattern {
+  key: string;
+  mappings: Record<string, string>;
+}
