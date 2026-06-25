@@ -37,7 +37,7 @@ export function runReducer(state: RunState, event: RunEvent): RunState {
     case "PLAN_PARTITIONED":
       return {
         ...state,
-        phase: event.checkpoints.length > 0 ? "checkpoint" : "filling",
+        phase: "filling",
         fills: event.fills,
         checkpoints: event.checkpoints,
       };

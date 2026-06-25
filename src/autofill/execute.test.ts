@@ -40,6 +40,12 @@ describe("applyFill", () => {
     const root = dom(`<input id="f" type="file">`);
     expect(applyFill(root, fd({ locator: "#f", kind: "file" }), "resume.pdf")).toBe(false);
   });
+
+  it("checks a checkbox input when value is yes", () => {
+    const root = dom(`<input id="c" type="checkbox">`);
+    expect(applyFill(root, fd({ locator: "#c", kind: "checkbox", label: "Subscribe" }), "yes")).toBe(true);
+    expect((root.querySelector("#c") as HTMLInputElement).checked).toBe(true);
+  });
 });
 
 describe("highlightField", () => {

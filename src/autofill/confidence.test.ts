@@ -29,4 +29,13 @@ describe("partitionPlan", () => {
     expect(fills).toHaveLength(0);
     expect(checkpoints).toHaveLength(1);
   });
+
+  it("routes needsVisual fields to checkpoints even when confidence is high", () => {
+    const { fills, checkpoints } = partitionPlan(
+      [f({ id: "a", needsVisual: true, confidence: 0.95, value: "x" })],
+      { a: "text" },
+    );
+    expect(fills).toHaveLength(0);
+    expect(checkpoints).toHaveLength(1);
+  });
 });

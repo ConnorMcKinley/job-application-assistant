@@ -12,7 +12,7 @@ export function partitionPlan(
   for (const field of fields) {
     const isFile = kinds[field.id] === "file";
     const hasValue = typeof field.value === "string" && field.value !== "";
-    if (!isFile && hasValue && field.confidence >= threshold) {
+    if (!isFile && hasValue && field.confidence >= threshold && !field.needsVisual) {
       fills.push(field);
     } else {
       checkpoints.push(field);
